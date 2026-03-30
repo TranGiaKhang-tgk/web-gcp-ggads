@@ -1,19 +1,21 @@
 FROM node:18
 
-# tạo thư mục làm việc
 WORKDIR /app
 
-# copy package.json của backend trước
+# install backend
 COPY backend/package*.json ./backend/
-
-# cài thư viện
 RUN cd backend && npm install
 
-# copy toàn bộ project
+# install frontend
+COPY frontend/package*.json ./frontend/
+RUN cd frontend && npm install && npm run build
+
+# copy code
 COPY . .
 
-# chuyển vào backend
+# copy build vào backend
+RUN cp -r frontend/build backend/build
+
 WORKDIR /app/backend
 
-# chạy server
 CMD ["node", "index.js"]
