@@ -50,7 +50,7 @@ const testFirebase = async () => {
 };
 
 // ===== PORT =====
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, async () => {
   console.log(`Backend running on port ${PORT}`);
