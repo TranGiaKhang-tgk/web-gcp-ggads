@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { auth, db } from "../Config/firebase-config";
+import { auth, db } from "../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useAdmin } from "../context/AdminContext";

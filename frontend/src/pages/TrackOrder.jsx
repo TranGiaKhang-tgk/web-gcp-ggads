@@ -10,7 +10,7 @@ import {
   Alert,
 } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
-import { db } from "../config/Firebase";
+import { db } from "../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import "../style/TrackOrder.css";
 

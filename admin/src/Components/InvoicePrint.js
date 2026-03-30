@@ -143,11 +143,11 @@ export const printInvoice = (order) => {
 
     <body>
       <div class="header">
-        <img src="/Logo.png" alt="Logo"/>
+        <img src="/admin/src/Components/logo2.jpg" alt="Logo"/>
         <div class="shop-info">
-          <h3>WeHome</h3>
+          <h3>BERRYGOLD</h3>
           <p>Hotline: 0909.090.909</p>
-          <p>Website: www.wehome.vaa.vn</p>
+          <p>Website: www.berrygold.vaa.vn</p>
           <p>CN1: 18A/1 Cộng Hòa, Tân Bình, TP.HCM</p>
           <p>CN2: 104 Nguyễn Văn Trỗi, Phú Nhuận, TP.HCM</p>
         </div>
@@ -218,7 +218,7 @@ export const printInvoice = (order) => {
       </div>
 
       <div class="footer">
-        <p>Cảm ơn quý khách đã mua hàng tại <strong>WeHome</strong>!</p>
+        <p>Cảm ơn quý khách đã mua hàng tại <strong>BERRYGOLD</strong>!</p>
       </div>
     </body>
   </html>

@@ -1,35 +1,58 @@
 import express from "express";
 import cors from "cors";
 import fileUpload from "express-fileupload";
+import path from "path";
+import { fileURLToPath } from "url";
+
 import productRoutes from "./routes/product.js";
 import orderRoutes from "./routes/order.js";
+import chatRoutes from "./routes/chat.js";
+
 // Firebase
 import { db } from "./config/firebase.js";
 import { collection, getDocs } from "firebase/firestore";
 
 const app = express();
+
+// ===== Fix __dirname =====
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// ===== Middleware =====
 app.use(cors());
 app.use(express.json());
-app.use(fileUpload()); // enable file upload
+app.use(fileUpload());
 
-// Routes
+// ===== API ROUTES =====
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
-app.get("/", (req, res) => res.send("Server OK "));
+app.use("/api/chat", chatRoutes);
 
-// Test Firebase connection
+// ===== TEST ROUTE =====
+app.get("/api/test", (req, res) => res.send("API OK"));
+
+// ===== SERVE FRONTEND =====
+app.use(express.static(path.join(__dirname, "build")));
+
+// 🔥 FIX CHUẨN (KHÔNG dùng "*" nữa)
+app.use((req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
+
+// ===== TEST FIREBASE =====
 const testFirebase = async () => {
   try {
     const querySnapshot = await getDocs(collection(db, "Products"));
-    console.log(` Firebase connected. Products count: ${querySnapshot.size}`);
+    console.log(`Firebase connected. Products count: ${querySnapshot.size}`);
   } catch (err) {
-    console.error(" Firebase connection error:", err.message);
+    console.error("Firebase connection error:", err.message);
   }
 };
 
-// Run server
-const PORT = 5000;
+// ===== PORT =====
+const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, async () => {
-  console.log(` Backend running on port ${PORT}`);
-  await testFirebase(); // test Firebase ngay khi server start
+  console.log(`Backend running on port ${PORT}`);
+  await testFirebase();
 });

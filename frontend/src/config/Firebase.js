@@ -3,19 +3,23 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
+// ⚙️ Firebase config
 const firebaseConfig = {
-  apiKey: "AIzaSyAkgRbC3BiSoH8ZXbIn-XuxR5ByleVW96Y",
-  authDomain: "nhom8tttn-f624a.firebaseapp.com",
-  projectId: "nhom8tttn-f624a",
-  storageBucket: "nhom8tttn-f624a.firebasestorage.app",
-  messagingSenderId: "278658913475",
-  appId: "1:278658913475:web:e538d98207e1d481a13e76"
+  apiKey: "AIzaSyANpku-KNyK1EeZGm0cGuhRdMuBKWODM9",
+  authDomain: "tttn2026-163fc.firebaseapp.com",
+  projectId: "tttn2026-163fc",
+  storageBucket: "tttn2026-163fc.appspot.com",
+  messagingSenderId: "136275542890",
+  appId: "1:136275542890:web:94272e92645c41c6671b13",
 };
 
+// 🔥 Init app (CHỈ 1 LẦN)
 const app = initializeApp(firebaseConfig);
 
-
+// ✅ Export service để dùng toàn app
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const storage = getStorage(app);
 
+// (tuỳ chọn) export app nếu sau này cần
+export default app;

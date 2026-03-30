@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { db } from "../Config/firebase-config";
+import { db } from "../firebase";
 import { doc, updateDoc } from "firebase/firestore";
 
 const AdminContext = createContext();
@@ -35,7 +35,7 @@ export const AdminProvider = ({ children }) => {
     loadAdmin();
   }, []);
 
-  // ✅ Khi đăng nhập thành công
+  // Khi đăng nhập thành công
   const login = async (data) => {
     localStorage.setItem("adminData", JSON.stringify(data));
     setAdmin(data);
@@ -48,7 +48,7 @@ export const AdminProvider = ({ children }) => {
     }
   };
 
-  // ✅ Khi đăng xuất
+  // Khi đăng xuất
   const logout = async () => {
     if (admin?.uid) {
       try {

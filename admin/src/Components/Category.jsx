@@ -4,7 +4,7 @@ import "../Style/Category.css";
 
 const Category = () => {
   const menu = [
-    { icon: "🏠", label: "Dashboard", path: "/" },
+    { icon: "🏠", label: "Trang chủ", path: "/" },
     { icon: "🛍️", label: "Sản phẩm", path: "/products" },
     { icon: "📦", label: "Đơn hàng", path: "/orders" },
     { icon: "👥", label: "Người dùng", path: "/users" },

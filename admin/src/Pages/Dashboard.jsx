@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../Style/Dashboard.css";
-import { db } from "../Config/firebase-config";
+import { db } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
 
 const Dashboard = () => {

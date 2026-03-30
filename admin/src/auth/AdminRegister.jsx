@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { auth, db } from "../Config/firebase-config";
+import { auth, db } from "../firebase";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import toast from "react-hot-toast";
@@ -18,8 +18,8 @@ export default function AdminRegister() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!form.email.endsWith("@wehome.vn")) {
-      toast.error("Chỉ email công ty (@wehome.vn) mới được phép đăng ký admin.");
+    if (!form.email.endsWith("@berrygold.vn")) {
+      toast.error("Chỉ email công ty (@berrygold.vn) mới được phép đăng ký admin.");
       return;
     }
 
@@ -57,7 +57,7 @@ export default function AdminRegister() {
           <input
             type="email"
             name="email"
-            placeholder="Email công ty (ví dụ: dat.le@wehome.vn)"
+            placeholder="Email công ty (ví dụ: dat.le@berrygold.vn)"
             value={form.email}
             onChange={handleChange}
             required

@@ -5,9 +5,14 @@
   left: 0;
   width: 100vw;
   height: 100vh;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
+  padding: 20px; /* fix sát viền */
+  overflow-y: auto; /* cho phép scroll */
+
   background: rgba(0, 0, 0, 0.45);
   z-index: 1000;
   animation: fadeIn 0.25s ease;
@@ -19,6 +24,10 @@
   flex-direction: column;
   width: 100%;
   max-width: 950px;
+
+  max-height: 90vh; /* fix tràn màn */
+  overflow: hidden;
+
   background: #fff;
   border-radius: 16px;
   padding: 28px 36px;
@@ -33,7 +42,7 @@
   font-weight: 700;
   color: #dc3545;
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   border-bottom: 2px solid #dc3545;
   padding-bottom: 10px;
 }
@@ -43,6 +52,10 @@
   display: flex;
   flex-direction: row;
   gap: 30px;
+
+  overflow-y: auto; /* scroll trong form */
+  max-height: 65vh;
+  padding-right: 8px;
 }
 
 /* ======= BÊN TRÁI ======= */
@@ -130,6 +143,11 @@
   justify-content: space-between;
   gap: 12px;
   margin-top: 20px;
+
+  position: sticky; /* giữ nút */
+  bottom: 0;
+  background: #fff;
+  padding-top: 10px;
 }
 
 .form-actions button {
@@ -165,6 +183,16 @@
   background-color: #e2e2e2;
 }
 
+/* ======= SCROLLBAR ======= */
+.add-product-form form::-webkit-scrollbar {
+  width: 6px;
+}
+
+.add-product-form form::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
 /* ======= ANIMATION ======= */
 @keyframes popUp {
   from {
@@ -190,10 +218,11 @@
 @media (max-width: 850px) {
   .add-product-form form {
     flex-direction: column;
+    max-height: 70vh;
   }
 
   .add-product-form {
-    width: 90%;
+    width: 95%;
     padding: 20px;
   }
 }

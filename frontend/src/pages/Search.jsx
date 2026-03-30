@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Card, Spinner } from "react-bootstrap";
 import { useSearchParams, Link } from "react-router-dom";
-import { db } from "../config/Firebase";
+import { db } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
 import "../style/Search.css";
 

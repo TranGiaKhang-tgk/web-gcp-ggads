@@ -2,22 +2,24 @@ import React, { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import "../Style/AddProduct.css";
 
-const AddProduct = ({ onSave, onClose, product }) => {
+// ✅ IMPORT SERVICE
+import { addProduct, updateProduct } from "../services/productService";
+
+const AddProduct = ({ onClose, product }) => {
   const isEdit = !!product;
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const categories = [
-    "Thiết bị nhà bếp",
-    "Máy lọc không khí",
-    "Đèn & chiếu sáng",
-    "Dụng cụ vệ sinh",
-    "Đồ dùng phòng tắm",
-    "Đồ điện gia dụng nhỏ",
-    "Chăm sóc cá nhân",
-    "Thiết bị giặt sấy",
-    "Gia dụng thông minh",
-    "Nội thất & trang trí",
-  ];
+  // ✅ Danh mục
+  const categories = {
+    "Điện thoại, Tablet": "phone-tablet",
+    "Laptop": "laptop",
+    "Âm thanh": "audio",
+    "Đồng hồ": "watch",
+    "Phụ kiện": "accessories",
+    "Tivi": "tv-appliance",
+    "Hàng cũ": "used-goods",
+    "Khuyến mãi": "promotion",
+  };
 
   const [formData, setFormData] = useState({
     id: "",
@@ -31,7 +33,7 @@ const AddProduct = ({ onSave, onClose, product }) => {
     images: [],
   });
 
-  // Khi chỉnh sửa hoặc thêm mới
+  // ✅ Khi edit
   useEffect(() => {
     if (isEdit && product) {
       setFormData({
@@ -44,18 +46,6 @@ const AddProduct = ({ onSave, onClose, product }) => {
         material: product.material || "",
         size: product.size || "",
         images: product.images || [],
-      });
-    } else {
-      setFormData({
-        id: "",
-        name: "",
-        category: "",
-        price: "",
-        description: "",
-        color: "",
-        material: "",
-        size: "",
-        images: [],
       });
     }
   }, [isEdit, product]);
@@ -74,122 +64,105 @@ const AddProduct = ({ onSave, onClose, product }) => {
     setFormData((prev) => ({ ...prev, images: fileData }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (isSubmitting) return;
-    setIsSubmitting(true);
+  // ✅ SUBMIT → FIRESTORE
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  if (isSubmitting) return;
+  setIsSubmitting(true);
 
-    try {
-      await onSave?.(formData);
-      toast.success(isEdit ? " Cập nhật sản phẩm thành công" : " Thêm sản phẩm thành công");
-      setTimeout(() => onClose?.(), 500);
-    } catch (error) {
-      toast.error(" Lưu thất bại, vui lòng thử lại");
-      console.error(" Lỗi khi lưu sản phẩm:", error);
-    } finally {
-      setIsSubmitting(false);
+  try {
+    // ❗ LOẠI BỎ images TRƯỚC KHI LƯU FIRESTORE
+    const { images, ...dataWithoutImages } = formData;
+
+    if (isEdit && formData.id) {
+      await updateProduct(formData.id, {
+        ...dataWithoutImages,
+        images: [], // tạm thời để rỗng
+      });
+      toast.success("Cập nhật sản phẩm thành công");
+    } else {
+      await addProduct({
+        ...dataWithoutImages,
+        images: [], // tạm thời để rỗng
+      });
+      toast.success("Thêm sản phẩm thành công");
     }
-  };
+
+    setTimeout(() => onClose?.(), 500);
+  } catch (error) {
+    console.error("Firestore error:", error);
+    toast.error("Lưu thất bại, vui lòng thử lại");
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
   return (
     <div className="add-product-container">
       <div className="add-product-form">
         <h2>{isEdit ? "Chỉnh sửa sản phẩm" : "Thêm sản phẩm mới"}</h2>
+
         <form onSubmit={handleSubmit}>
-           <div className="form-left">
-          {/* Firestore ID */}
-          <label>Mã sản phẩm (ID Firestore)</label>
-          <input
-            type="text"
-            name="id"
-            value={formData.id || "Sẽ được tạo sau khi lưu"}
-            readOnly
-            className="readonly-input"
-          />
+          <div className="form-left">
+            <label>Mã sản phẩm (Firestore ID)</label>
+            <input
+              type="text"
+              value={formData.id || "Tự động tạo"}
+              readOnly
+              className="readonly-input"
+            />
 
-          {/* Tên sản phẩm */}
-          <label>Tên sản phẩm</label>
-          <input name="name" value={formData.name} onChange={handleChange} required />
+            <label>Tên sản phẩm</label>
+            <input name="name" value={formData.name} onChange={handleChange} required />
 
-          {/* Danh mục */}
-          <label>Danh mục</label>
-          <select name="category" value={formData.category} onChange={handleChange} required>
-            <option value="">-- Chọn danh mục --</option>
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
+            <label>Danh mục</label>
+            <select name="category" value={formData.category} onChange={handleChange} required>
+              <option value="">-- Chọn danh mục --</option>
+              {Object.entries(categories).map(([name, slug]) => (
+                <option key={slug} value={slug}>{name}</option>
+              ))}
+            </select>
 
-          {/* Giá */}
-          <label>Giá (VNĐ)</label>
-          <input
-            type="number"
-            name="price"
-            value={formData.price}
-            onChange={handleChange}
-            min="0"
-            required
-          />
+            <label>Giá (VNĐ)</label>
+            <input type="number" name="price" value={formData.price} onChange={handleChange} required />
 
-          {/* 🔹 Màu sắc */}
-          <label>Màu sắc</label>
-          <input
-            type="text"
-            name="color"
-            placeholder="VD: Trắng, Đen, Xám..."
-            value={formData.color}
-            onChange={handleChange}
-          />
+            <label>Màu sắc</label>
+            <input name="color" value={formData.color} onChange={handleChange} />
 
-          {/* 🔹 Chất liệu */}
-          <label>Chất liệu</label>
-          <input
-            type="text"
-            name="material"
-            placeholder="VD: Inox, Nhựa ABS, Gỗ, ..."
-            value={formData.material}
-            onChange={handleChange}
-          />
+            <label>Chất liệu</label>
+            <input name="material" value={formData.material} onChange={handleChange} />
 
-          {/* 🔹 Kích thước */}
-          <label>Kích thước</label>
-          <input
-            type="text"
-            name="size"
-            placeholder="VD: 30x40cm, 15x20x10cm..."
-            value={formData.size}
-            onChange={handleChange}
-          />
-        </div>
+            <label>Kích thước</label>
+            <input name="size" value={formData.size} onChange={handleChange} />
+
+            <label>Ram</label>
+            <input name="size" value={formData.size} onChange={handleChange} />
+
+            <label>Bộ nhớ trong</label>
+            <input name="size" value={formData.size} onChange={handleChange} />
+
+
+          </div>
 
           <div className="form-right">
-          {/* Mô tả */}
-          <label>Mô tả</label>
-          <textarea name="description" value={formData.description} onChange={handleChange} required />
+            <label>Mô tả</label>
+            <textarea name="description" value={formData.description} onChange={handleChange} required />
 
-          {/* Hình ảnh */}
-          <label>Hình ảnh</label>
-          <input type="file" multiple accept="image/*" onChange={handleImageChange} />
-          <div className="preview-images">
-            {(formData.images || []).map((img, index) => {
-              const src = typeof img === "string" ? img : img.preview;
-              return <img key={index} src={src} alt={`preview-${index}`} />;
-            })}
-          </div>
+            <label>Hình ảnh</label>
+            <input type="file" multiple accept="image/*" onChange={handleImageChange} />
 
-          {/* Nút */}
-          <div className="form-actions">
-            <button type="submit" disabled={isSubmitting}>
-              {isSubmitting
-                ? "Đang xử lý..."
-                : isEdit
-                ? "Cập nhật"
-                : "Thêm sản phẩm"}
-            </button>
-            <button type="button" onClick={onClose}>Hủy</button>
-          </div>
+            <div className="preview-images">
+              {formData.images.map((img, i) => (
+                <img key={i} src={img.preview} alt="preview" />
+              ))}
+            </div>
+
+            <div className="form-actions">
+              <button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Đang xử lý..." : isEdit ? "Cập nhật" : "Thêm sản phẩm"}
+              </button>
+              <button type="button" onClick={onClose}>Hủy</button>
+            </div>
           </div>
         </form>
       </div>

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth, db } from "../config/Firebase";
+import { auth, db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
 
 // Tạo Context

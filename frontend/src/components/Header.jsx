@@ -1,18 +1,33 @@
 import React, { useState } from "react";
-import {Container,Row,Col,InputGroup,FormControl,Button,Dropdown,} from "react-bootstrap";
-import {FaPhoneAlt,FaShoppingCart,FaUser,FaSearch,FaClipboardList,FaQuestionCircle,} from "react-icons/fa";
+import {
+  Container,
+  Row,
+  Col,
+  InputGroup,
+  FormControl,
+  Button,
+  Dropdown,
+} from "react-bootstrap";
+import {
+  FaPhoneAlt,
+  FaShoppingCart,
+  FaUser,
+  FaSearch,
+  FaClipboardList,
+  FaQuestionCircle,
+} from "react-icons/fa";
 import { useCart } from "../context/cartContext";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useUser } from "../context/UserContext";
 import "../style/Header.css";
 
-export default function Header() {
-  const { user, logout } = useUser(); 
+// 👇 NHẬN onLoginClick TỪ App.js
+export default function Header({ onLoginClick }) {
+  const { user, logout } = useUser();
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState("");
   const { cartCount } = useCart();
-
 
   const handleLogout = () => {
     Swal.fire({
@@ -20,8 +35,8 @@ export default function Header() {
       text: "Phiên đăng nhập hiện tại sẽ bị kết thúc.",
       icon: "question",
       showCancelButton: true,
-      confirmButtonColor: "#dc3545",
-      cancelButtonColor: "#6c757d",
+      confirmButtonColor: "#656565",
+      cancelButtonColor: "#c4d6e5",
       confirmButtonText: "Đăng xuất",
       cancelButtonText: "Hủy",
     }).then(async (result) => {
@@ -39,7 +54,7 @@ export default function Header() {
     });
   };
 
-  //  Xử lý tìm kiếm
+  // 🔍 Tìm kiếm
   const handleSearch = () => {
     const trimmed = keyword.trim();
     if (trimmed !== "") {
@@ -49,7 +64,7 @@ export default function Header() {
 
   return (
     <header className="header-area">
-      {/* --- Thanh trên cùng --- */}
+      {/* ===== TOP BAR ===== */}
       <div className="top-bar">
         <Container className="d-flex justify-content-between align-items-center">
           <span className="text-white">
@@ -61,20 +76,23 @@ export default function Header() {
             <Link to="#">Liên hệ</Link>
             <Link to="#">Tuyển dụng</Link>
 
-            {/* 🔹 Nếu chưa đăng nhập */}
+            {/* ===== AUTH ===== */}
             {!user ? (
-              <Link to="../auth/Login" className="login-link">
+              // ✅ ĐĂNG NHẬP BẰNG MODAL (KHÔNG ROUTE)
+              <button
+                className="login-link btn btn-link text-white p-0"
+                onClick={onLoginClick}
+              >
                 <FaUser className="me-1" /> Đăng nhập
-              </Link>
+              </button>
             ) : (
-              // 🔹 Nếu đã đăng nhập
               <Dropdown align="end">
                 <Dropdown.Toggle
                   variant="link"
                   id="user-dropdown"
                   className="text-white text-decoration-none fw-semibold"
                 >
-                  👤{user.fullname}
+                  👤 {user.fullname}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
@@ -85,7 +103,9 @@ export default function Header() {
                     Đơn hàng của tôi
                   </Dropdown.Item>
                   <Dropdown.Divider />
-                  <Dropdown.Item onClick={handleLogout}>Đăng xuất</Dropdown.Item>
+                  <Dropdown.Item onClick={handleLogout}>
+                    Đăng xuất
+                  </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             )}
@@ -93,22 +113,20 @@ export default function Header() {
         </Container>
       </div>
 
-      {/* --- Logo + Thanh tìm kiếm + Biểu tượng --- */}
+      {/* ===== MIDDLE BAR ===== */}
       <div className="middle-bar">
         <Container>
           <Row className="align-items-center">
-            <Col
-              md={3}
-              sm={12}
-              className="text-center text-md-start mb-2 mb-md-0"
-            >
+            {/* LOGO */}
+            <Col md={3} sm={12} className="text-center text-md-start mb-2 mb-md-0">
               <Link to="/" className="logo text-decoration-none">
                 <h2 className="m-0">
-                  <span className="logo-icon">W</span>E<span>HOME</span>
+                  <span className="logo-icon">BERRY</span> <span>GOLD</span>
                 </h2>
               </Link>
             </Col>
 
+            {/* SEARCH */}
             <Col md={6} sm={12}>
               <InputGroup className="search-box">
                 <FormControl
@@ -124,24 +142,21 @@ export default function Header() {
               </InputGroup>
             </Col>
 
-            <Col
-              md={3}
-              sm={12}
-              className="icons text-center text-md-end mt-3 mt-md-0"
-            >
-               <Link to="../pages/Cart" className="icon-item position-relative">
-                  <FaShoppingCart size={22} />
-                  <span>Giỏ hàng</span>
+            {/* ICONS */}
+            <Col md={3} sm={12} className="icons text-center text-md-end mt-3 mt-md-0">
+              <Link to="/pages/cart" className="icon-item position-relative">
+                <FaShoppingCart size={22} />
+                <span>Giỏ hàng</span>
+                {cartCount > 0 && (
+                  <span className="cart-badge">{cartCount}</span>
+                )}
+              </Link>
 
-                  {cartCount > 0 && (
-                    <span className="cart-badge">{cartCount}</span>
-                  )}
-                </Link>
-
-              <Link to="../pages/TrackOrder" className="icon-item">
+              <Link to="/pages/trackorder" className="icon-item">
                 <FaClipboardList />
                 <span>Đơn hàng</span>
               </Link>
+
               <Link to="#" className="icon-item">
                 <FaQuestionCircle />
                 <span>Hỏi đáp</span>

@@ -19,10 +19,10 @@ export default function Footer() {
             {/* ==== CỘT 1: GIỚI THIỆU ==== */}
             <Col md={5} sm={12} className="mb-4">
               <h4 className="footer-logo">
-                <span className="logo-icon">W</span>E<span>HOME</span>
+                <span className="logo-icon">BERRY</span> <span>GOLD</span>
               </h4>
               <p className="footer-desc">
-                WeHome.vaa.vn tự hào mang đến những sản phẩm gia dụng thông minh,
+                Berrygold.vn tự hào mang đến những sản phẩm thông minh,
                 bền bỉ và tiện lợi — giúp nâng tầm chất lượng cuộc sống hiện đại của
                 mọi gia đình Việt.
               </p>
@@ -42,11 +42,11 @@ export default function Footer() {
                 </li>
                 <li>
                   <FaEnvelope className="me-2 text-danger" />
-                  <strong>Email hỗ trợ:</strong> support@wehome.vaa.vn
+                  <strong>Email hỗ trợ:</strong> support@Berrygold.vn
                 </li>
                 <li>
                   <FaGlobe className="me-2 text-danger" />
-                  <strong>Website:</strong> https://wehome.vaa.vn
+                  <strong>Website:</strong> https://Berrygold.vn
                 </li>
               </ul>
             </Col>
@@ -92,7 +92,7 @@ export default function Footer() {
       <div className="footer-bottom text-center">
         <Container>
           <p className="copyright">
-            © {new Date().getFullYear()} WeHome.vaa.vn — All rights reserved - Nhóm 8.
+            © {new Date().getFullYear()} Berrygold.vn — All rights reserved - Nhóm .
           </p>
         </Container>
       </div>

@@ -12,35 +12,31 @@ export default function Products() {
   const [sort, setSort] = useState("");
 
   const categories = [
-    { name: "Thiết bị nhà bếp", icon: "🍳", slug: "kitchen" },
-    { name: "Máy lọc không khí", icon: "🌬️", slug: "air-purifier" },
-    { name: "Đèn & chiếu sáng", icon: "💡", slug: "lighting" },
-    { name: "Dụng cụ vệ sinh", icon: "🧹", slug: "cleaning" },
-    { name: "Đồ dùng phòng tắm", icon: "🛁", slug: "bathroom" },
-    { name: "Đồ điện gia dụng nhỏ", icon: "🔌", slug: "small-appliances" },
-    { name: "Chăm sóc cá nhân", icon: "💆", slug: "personal-care" },
-    { name: "Thiết bị giặt sấy", icon: "🧺", slug: "laundry" },
-    { name: "Gia dụng thông minh", icon: "🏠", slug: "smart-home" },
-    { name: "Nội thất & trang trí", icon: "🪑", slug: "furniture" },
-  ];
+  { name: "Điện thoại, Tablet", icon: "📱", slug: "phone-tablet" },
+  { name: "Laptop", icon: "💻", slug: "laptop" },
+  { name: "Âm thanh", icon: "🎧", slug: "audio" },
+  { name: "Đồng hồ", icon: "⌚", slug: "watch" },
+  { name: "Phụ kiện", icon: "🔌", slug: "accessories" },
+  { name: "Tivi", icon: "📺", slug: "tv-appliance" },
+  { name: "Hàng cũ", icon: "📦", slug: "used-goods" },
+  { name: "Khuyến mãi", icon: "🏷️", slug: "promotion" },
+];
 
-  const slugMap = {
-    "Thiết bị nhà bếp": "kitchen",
-    "Máy lọc không khí": "air-purifier",
-    "Đèn & chiếu sáng": "lighting",
-    "Dụng cụ vệ sinh": "cleaning",
-    "Đồ dùng phòng tắm": "bathroom",
-    "Đồ điện gia dụng nhỏ": "small-appliances",
-    "Chăm sóc cá nhân": "personal-care",
-    "Thiết bị giặt sấy": "laundry",
-    "Gia dụng thông minh": "smart-home",
-    "Nội thất & trang trí": "furniture",
-  };
+const slugMap = {
+  "Điện thoại, Tablet": "phone-tablet",
+  "Laptop": "laptop",
+  "Âm thanh": "audio",
+  "Đồng hồ": "watch",
+  "Phụ kiện": "accessories",
+  "Tivi, Điện máy": "tv-appliance",
+  "Hàng cũ": "used-goods",
+  "Khuyến mãi": "promotion",
+};
 
   const currentCategory =
     categories.find((c) => c.slug === slug)?.name || "Danh mục sản phẩm";
 
-  //  Lấy danh sách sản phẩm từ backend
+  //  Lấy danh sách sản phẩm - backend
   useEffect(() => {
     const fetchProducts = async () => {
       try {

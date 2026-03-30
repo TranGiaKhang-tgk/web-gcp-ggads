@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../Style/Header.css";
 import { useAdmin } from "../context/AdminContext";
-import { db} from "../Config/firebase-config";
+import { db} from "../firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
@@ -37,7 +37,7 @@ const Header = () => {
         {/* LEFT */}
         <div className="header-left">
           <h3 className="logo">
-            WeHome <span>Admin</span>
+            BERRYGOLD <span>ADMIN</span>
           </h3>
 
           <div className="search-wrapper">

@@ -4,7 +4,7 @@ import { Form, Button, Card, Row, Col, Spinner } from "react-bootstrap";
 import { getProvinces, getCommunes } from "../API/Vietnam";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
-import { db } from "../config/Firebase";
+import { db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -12,15 +12,17 @@ import "../style/Checkout.css";
 
 export default function Checkout() {
   const [form, setForm] = useState({
-    fullname: "",
-    phone: "",
-    email: "",
-    address: "",
-    province: "",
-    commune: "",
-    note: "",
-    payment: "cod",
-  });
+  fullname: "",
+  phone: "",
+  email: "",
+  address: "",
+  province: "",
+  provinceCode: "",   // 🔥 thêm
+  commune: "",
+  communeCode: "",    // 🔥 thêm
+  note: "",
+  payment: "cod",
+});
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
   const [provinces, setProvinces] = useState([]);
@@ -103,13 +105,13 @@ export default function Checkout() {
     const code = e.target.value;
     const selected = provinces.find((p) => p.code === code);
 
-    setForm({
-      ...form,
-      province: selected ? selected.name : "",
-      commune: "",
-      provinceCode: code,
-      communeCode: "",
-    });
+   setForm((prev) => ({
+  ...prev,
+  province: selected ? selected.name : "",
+  provinceCode: code,
+  commune: "",
+  communeCode: "",
+}));
 
     if (!code) return setCommunes([]);
     const data = await getCommunes(code);

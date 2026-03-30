@@ -9,7 +9,7 @@ import {
   Nav,
 } from "react-bootstrap";
 import { useUser } from "../context/UserContext";
-import { db } from "../config/Firebase";
+import { db } from "../firebase";
 import {
   collection,
   query,

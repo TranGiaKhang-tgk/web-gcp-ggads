@@ -110,7 +110,7 @@ router.patch("/:id/status", async (req, res) => {
 
     // Nếu trạng thái là "Hoàn thành" → cập nhật luôn thanh toán
     if (status === "Hoàn thành") {
-      updateData.paymentStatus = "Đã thanh toán"; // 💰 Thanh toán hoàn tất
+      updateData.paymentStatus = "Đã thanh toán"; // Thanh toán hoàn tất
       updateData.shipping = {
         ...(data.shipping || {}),
         currentStatus: "delivered",
@@ -193,7 +193,7 @@ router.patch("/:id/shipping", async (req, res) => {
       status: "Đang giao",
     });
   } catch (err) {
-    console.error("🔥 Lỗi khi tạo đơn vận chuyển:", err);
+    console.error("Lỗi khi tạo đơn vận chuyển:", err);
     res.status(500).json({ message: "Server error", error: err.message });
   }
 });
