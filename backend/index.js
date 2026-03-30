@@ -29,15 +29,21 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/chat", chatRoutes);
 
 // ===== TEST ROUTE =====
-app.get("/api/test", (req, res) => res.send("API OK"));
+app.get("/api/test", (req, res) => res.send("API OK 🚀"));
 
-// ===== SERVE FRONTEND =====
+// ===== ROOT ROUTE (QUAN TRỌNG - FIX CLOUD RUN) =====
+app.get("/", (req, res) => {
+  res.send("Server is running 🚀");
+});
+
+/*
+❌ TẠM TẮT FRONTEND (tránh crash trên Cloud Run)
 app.use(express.static(path.join(__dirname, "build")));
 
-// 🔥 FIX CHUẨN (KHÔNG dùng "*" nữa)
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
+*/
 
 // ===== TEST FIREBASE =====
 const testFirebase = async () => {
@@ -49,9 +55,10 @@ const testFirebase = async () => {
   }
 };
 
-// ===== PORT =====
+// ===== PORT (CHUẨN CLOUD RUN) =====
 const PORT = process.env.PORT || 8080;
 
+// ===== START SERVER =====
 app.listen(PORT, async () => {
   console.log(`Backend running on port ${PORT}`);
   await testFirebase();
